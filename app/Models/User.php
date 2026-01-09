@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -48,5 +49,29 @@ class User extends Authenticatable
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Get the projects owned by this user.
+     */
+    public function projects()
+    {
+        return $this->hasMany(Project::class, 'owner_id');
+    }
+
+    /**
+     * Check if user is Super Admin.
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === 'super_admin';
+    }
+
+    /**
+     * Check if user is Perangkat Desa.
+     */
+    public function isPerangkatDesa(): bool
+    {
+        return $this->role === 'perangkat_desa';
     }
 }
