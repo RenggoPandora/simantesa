@@ -89,6 +89,7 @@ export default function SuperAdmin({ stats, aktivitasTerbaru, filters = {} }: Pr
                                     console.log('Tanggal Mulai changed:', e.target.value);
                                     setTanggalMulai(e.target.value);
                                 }}
+                                style={{ colorScheme: 'light' }}
                                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
                             />
                         </div>
@@ -105,6 +106,7 @@ export default function SuperAdmin({ stats, aktivitasTerbaru, filters = {} }: Pr
                                     console.log('Tanggal Akhir changed:', e.target.value);
                                     setTanggalAkhir(e.target.value);
                                 }}
+                                style={{ colorScheme: 'light' }}
                                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
                             />
                         </div>

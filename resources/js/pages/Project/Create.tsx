@@ -52,6 +52,7 @@ export default function Create() {
                                         id="tanggal_mulai"
                                         value={data.tanggal_mulai}
                                         onChange={(e) => setData('tanggal_mulai', e.target.value)}
+                                        style={{ colorScheme: 'light' }}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                     />
                                     {errors.tanggal_mulai && (

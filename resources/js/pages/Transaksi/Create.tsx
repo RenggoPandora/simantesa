@@ -1,5 +1,5 @@
 import { Head, Link, useForm } from '@inertiajs/react';
-import { FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
 interface Project {
@@ -22,6 +22,21 @@ export default function Create({ project }: Props) {
         penanggung_jawab: '',
         bukti_file: null as File | null,
     });
+
+    const [displayNominal, setDisplayNominal] = useState('');
+
+    const formatNumber = (value: string) => {
+        // Remove non-digit characters
+        const numbers = value.replace(/\D/g, '');
+        // Add thousand separators
+        return numbers.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    };
+
+    const handleNominalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const rawValue = e.target.value.replace(/\D/g, ''); // Remove non-digits
+        setData('nominal', rawValue); // Store raw number
+        setDisplayNominal(formatNumber(rawValue)); // Display formatted
+    };
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
@@ -79,6 +94,7 @@ export default function Create({ project }: Props) {
                                         id="tanggal"
                                         value={data.tanggal}
                                         onChange={(e) => setData('tanggal', e.target.value)}
+                                        style={{ colorScheme: 'light' }}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                     />
                                     {errors.tanggal && (
@@ -110,14 +126,12 @@ export default function Create({ project }: Props) {
                                     <div className="relative">
                                         <span className="absolute left-4 top-2 text-gray-500">Rp</span>
                                         <input
-                                            type="number"
+                                            type="text"
                                             id="nominal"
-                                            value={data.nominal}
-                                            onChange={(e) => setData('nominal', e.target.value)}
+                                            value={displayNominal}
+                                            onChange={handleNominalChange}
                                             className="w-full pl-12 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                             placeholder="0"
-                                            min="0"
-                                            step="0.01"
                                         />
                                     </div>
                                     {errors.nominal && (

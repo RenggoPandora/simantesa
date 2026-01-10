@@ -1,5 +1,5 @@
 import { Head, Link, useForm } from '@inertiajs/react';
-import { FormEvent } from 'react';
+import { FormEvent, useState, useEffect } from 'react';
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
 interface Transaksi {
@@ -34,6 +34,23 @@ export default function Edit({ transaksi, project }: Props) {
         penanggung_jawab: transaksi.penanggung_jawab,
         bukti_file: null as File | null,
     });
+
+    const formatNumber = (value: string) => {
+        const numbers = value.replace(/\D/g, '');
+        return numbers.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    };
+
+    const [displayNominal, setDisplayNominal] = useState('');
+
+    useEffect(() => {
+        setDisplayNominal(formatNumber(transaksi.nominal.toString()));
+    }, [transaksi.nominal]);
+
+    const handleNominalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const rawValue = e.target.value.replace(/\D/g, '');
+        setData('nominal', rawValue);
+        setDisplayNominal(formatNumber(rawValue));
+    };
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
@@ -91,6 +108,7 @@ export default function Edit({ transaksi, project }: Props) {
                                         id="tanggal"
                                         value={data.tanggal}
                                         onChange={(e) => setData('tanggal', e.target.value)}
+                                        style={{ colorScheme: 'light' }}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                     />
                                     {errors.tanggal && (
@@ -121,13 +139,12 @@ export default function Edit({ transaksi, project }: Props) {
                                     <div className="relative">
                                         <span className="absolute left-4 top-2 text-gray-500">Rp</span>
                                         <input
-                                            type="number"
+                                            type="text"
                                             id="nominal"
-                                            value={data.nominal}
-                                            onChange={(e) => setData('nominal', e.target.value)}
+                                            value={displayNominal}
+                                            onChange={handleNominalChange}
                                             className="w-full pl-12 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-                                            min="0"
-                                            step="0.01"
+                                            placeholder="0"
                                         />
                                     </div>
                                     {errors.nominal && (

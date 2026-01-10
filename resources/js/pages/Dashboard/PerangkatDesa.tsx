@@ -71,6 +71,7 @@ export default function PerangkatDesa({ stats, filters = {} }: Props) {
                                 name="tanggal_mulai"
                                 value={tanggalMulai}
                                 onChange={(e) => setTanggalMulai(e.target.value)}
+                                style={{ colorScheme: 'light' }}
                                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
                             />
                         </div>
@@ -84,6 +85,7 @@ export default function PerangkatDesa({ stats, filters = {} }: Props) {
                                 name="tanggal_akhir"
                                 value={tanggalAkhir}
                                 onChange={(e) => setTanggalAkhir(e.target.value)}
+                                style={{ colorScheme: 'light' }}
                                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
                             />
                         </div>
