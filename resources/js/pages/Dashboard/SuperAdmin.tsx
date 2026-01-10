@@ -131,40 +131,40 @@ export default function SuperAdmin({ stats, aktivitasTerbaru, filters = {} }: Pr
                 {/* Stats Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                             <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-xl shadow-sm border border-red-200 p-6">
-                                <div className="flex items-center justify-between mb-3">
-                                    <div className="text-sm font-medium text-red-700">Total Aset Desa</div>
-                                    <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div className="flex items-start justify-between mb-3">
+                                    <div className="text-sm font-medium text-red-700 pr-2 flex-1">Total Aset Desa</div>
+                                    <svg className="w-8 h-8 text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                                     </svg>
                                 </div>
                                 <div className="text-3xl font-bold text-red-900">{stats.totalAset}</div>
                             </div>
                             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                                <div className="flex items-center justify-between mb-3">
-                                    <div className="text-sm font-medium text-gray-600">Total Project Aktif</div>
-                                    <svg className="w-8 h-8 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div className="flex items-start justify-between mb-3">
+                                    <div className="text-sm font-medium text-gray-600 pr-2 flex-1">Total Project Aktif</div>
+                                    <svg className="w-8 h-8 text-gray-900 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                     </svg>
                                 </div>
                                 <div className="text-3xl font-bold text-gray-900">{stats.totalProjectAktif}</div>
                             </div>
                             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                                <div className="flex items-center justify-between mb-3">
-                                    <div className="text-sm font-medium text-gray-600">Total Pemasukan</div>
-                                    <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div className="flex items-start justify-between mb-3">
+                                    <div className="text-sm font-medium text-gray-600 pr-2 flex-1">Total Pemasukan</div>
+                                    <svg className="w-8 h-8 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5m0 0l5 5m-5-5v12" />
                                     </svg>
                                 </div>
-                                <div className="text-2xl font-bold text-green-600">{formatRupiah(stats.totalPemasukan)}</div>
+                                <div className="text-lg font-bold text-green-600 break-words">{formatRupiah(stats.totalPemasukan)}</div>
                             </div>
                             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                                <div className="flex items-center justify-between mb-3">
-                                    <div className="text-sm font-medium text-gray-600">Total Pengeluaran</div>
-                                    <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div className="flex items-start justify-between mb-3">
+                                    <div className="text-sm font-medium text-gray-600 pr-2 flex-1">Total Pengeluaran</div>
+                                    <svg className="w-8 h-8 text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 13l-5 5m0 0l-5-5m5 5V6" />
                                     </svg>
                                 </div>
-                                <div className="text-2xl font-bold text-red-600">{formatRupiah(stats.totalPengeluaran)}</div>
+                                <div className="text-lg font-bold text-red-600 break-words">{formatRupiah(stats.totalPengeluaran)}</div>
                             </div>
                         </div>
 

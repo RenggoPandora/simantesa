@@ -110,40 +110,40 @@ export default function PerangkatDesa({ stats, filters = {} }: Props) {
                 {/* Stats Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                             <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-xl shadow-sm border border-red-200 p-6">
-                                <div className="flex items-center justify-between mb-3">
-                                    <div className="text-sm font-medium text-red-700">Jumlah Project</div>
-                                    <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div className="flex items-start justify-between mb-3">
+                                    <div className="text-sm font-medium text-red-700 pr-2 flex-1">Jumlah Project</div>
+                                    <svg className="w-8 h-8 text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                     </svg>
                                 </div>
                                 <div className="text-3xl font-bold text-red-900">{stats.jumlahProject}</div>
                             </div>
                             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                                <div className="flex items-center justify-between mb-3">
-                                    <div className="text-sm font-medium text-gray-600">Total Pemasukan</div>
-                                    <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div className="flex items-start justify-between mb-3">
+                                    <div className="text-sm font-medium text-gray-600 pr-2 flex-1">Total Pemasukan</div>
+                                    <svg className="w-8 h-8 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5m0 0l5 5m-5-5v12" />
                                     </svg>
                                 </div>
-                                <div className="text-xl font-bold text-green-600">{formatRupiah(stats.totalPemasukan)}</div>
+                                <div className="text-lg font-bold text-green-600 break-words">{formatRupiah(stats.totalPemasukan)}</div>
                             </div>
                             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                                <div className="flex items-center justify-between mb-3">
-                                    <div className="text-sm font-medium text-gray-600">Total Pengeluaran</div>
-                                    <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div className="flex items-start justify-between mb-3">
+                                    <div className="text-sm font-medium text-gray-600 pr-2 flex-1">Total Pengeluaran</div>
+                                    <svg className="w-8 h-8 text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 13l-5 5m0 0l-5-5m5 5V6" />
                                     </svg>
                                 </div>
-                                <div className="text-xl font-bold text-red-600">{formatRupiah(stats.totalPengeluaran)}</div>
+                                <div className="text-lg font-bold text-red-600 break-words">{formatRupiah(stats.totalPengeluaran)}</div>
                             </div>
                             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                                <div className="flex items-center justify-between mb-3">
-                                    <div className="text-sm font-medium text-gray-600">Sisa Dana</div>
-                                    <svg className="w-8 h-8 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div className="flex items-start justify-between mb-3">
+                                    <div className="text-sm font-medium text-gray-600 pr-2 flex-1">Sisa Dana</div>
+                                    <svg className="w-8 h-8 text-gray-900 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                                     </svg>
                                 </div>
-                                <div className="text-xl font-bold text-gray-900">{formatRupiah(stats.sisaDana)}</div>
+                                <div className="text-lg font-bold text-gray-900 break-words">{formatRupiah(stats.sisaDana)}</div>
                             </div>
                         </div>
 

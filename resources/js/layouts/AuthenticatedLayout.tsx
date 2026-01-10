@@ -110,7 +110,7 @@ export default function AuthenticatedLayout({ children }: Props) {
             {/* Mobile sidebar backdrop */}
             {sidebarOpen && (
                 <div 
-                    className="fixed inset-0 z-30 bg-gray-900 bg-opacity-50 lg:hidden"
+                    className="fixed inset-0 z-30 bg-gray-900/50 lg:hidden"
                     onClick={() => setSidebarOpen(false)}
                 ></div>
             )}
@@ -134,7 +134,7 @@ export default function AuthenticatedLayout({ children }: Props) {
                 </header>
 
                 {/* Page Content */}
-                <main className="p-4 lg:p-8">
+                <main className="p-4 lg:p-8 min-h-screen">
                     {children}
                 </main>
             </div>
