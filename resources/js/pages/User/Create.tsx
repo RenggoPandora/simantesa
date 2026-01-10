@@ -37,7 +37,7 @@ export default function Create() {
                                         id="name"
                                         value={data.name}
                                         onChange={(e) => setData('name', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                         placeholder="Contoh: Budi Santoso"
                                     />
                                     {errors.name && (
@@ -54,7 +54,7 @@ export default function Create() {
                                         id="email"
                                         value={data.email}
                                         onChange={(e) => setData('email', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                         placeholder="contoh@email.com"
                                     />
                                     {errors.email && (
@@ -70,7 +70,7 @@ export default function Create() {
                                         id="role"
                                         value={data.role}
                                         onChange={(e) => setData('role', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                     >
                                         <option value="perangkat_desa">Perangkat Desa</option>
                                         <option value="super_admin">Super Admin</option>
@@ -89,7 +89,7 @@ export default function Create() {
                                         id="password"
                                         value={data.password}
                                         onChange={(e) => setData('password', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                         placeholder="Minimal 8 karakter"
                                     />
                                     {errors.password && (
@@ -106,7 +106,7 @@ export default function Create() {
                                         id="password_confirmation"
                                         value={data.password_confirmation}
                                         onChange={(e) => setData('password_confirmation', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                         placeholder="Ulangi password"
                                     />
                                 </div>

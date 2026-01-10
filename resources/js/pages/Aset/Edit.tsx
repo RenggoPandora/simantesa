@@ -48,7 +48,7 @@ export default function Edit({ aset }: Props) {
                                         id="nama_aset"
                                         value={data.nama_aset}
                                         onChange={(e) => setData('nama_aset', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                     />
                                     {errors.nama_aset && (
                                         <div className="mt-1 text-sm text-red-600">{errors.nama_aset}</div>
@@ -64,7 +64,7 @@ export default function Edit({ aset }: Props) {
                                         id="jumlah"
                                         value={data.jumlah}
                                         onChange={(e) => setData('jumlah', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                         min="1"
                                     />
                                     {errors.jumlah && (
@@ -80,7 +80,7 @@ export default function Edit({ aset }: Props) {
                                         id="kondisi"
                                         value={data.kondisi}
                                         onChange={(e) => setData('kondisi', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                     >
                                         <option value="baik">Baik</option>
                                         <option value="rusak_ringan">Rusak Ringan</option>
@@ -100,7 +100,7 @@ export default function Edit({ aset }: Props) {
                                         value={data.keterangan}
                                         onChange={(e) => setData('keterangan', e.target.value)}
                                         rows={4}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                     />
                                     {errors.keterangan && (
                                         <div className="mt-1 text-sm text-red-600">{errors.keterangan}</div>

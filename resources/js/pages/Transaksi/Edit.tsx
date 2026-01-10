@@ -72,7 +72,7 @@ export default function Edit({ transaksi, project }: Props) {
                                         id="tipe"
                                         value={data.tipe}
                                         onChange={(e) => setData('tipe', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                     >
                                         <option value="pemasukan">Pemasukan</option>
                                         <option value="pengeluaran">Pengeluaran</option>
@@ -91,7 +91,7 @@ export default function Edit({ transaksi, project }: Props) {
                                         id="tanggal"
                                         value={data.tanggal}
                                         onChange={(e) => setData('tanggal', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                     />
                                     {errors.tanggal && (
                                         <div className="mt-1 text-sm text-red-600">{errors.tanggal}</div>
@@ -107,7 +107,7 @@ export default function Edit({ transaksi, project }: Props) {
                                         value={data.keterangan}
                                         onChange={(e) => setData('keterangan', e.target.value)}
                                         rows={3}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                     />
                                     {errors.keterangan && (
                                         <div className="mt-1 text-sm text-red-600">{errors.keterangan}</div>
@@ -125,7 +125,7 @@ export default function Edit({ transaksi, project }: Props) {
                                             id="nominal"
                                             value={data.nominal}
                                             onChange={(e) => setData('nominal', e.target.value)}
-                                            className="w-full pl-12 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            className="w-full pl-12 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                             min="0"
                                             step="0.01"
                                         />
@@ -144,7 +144,7 @@ export default function Edit({ transaksi, project }: Props) {
                                         id="penanggung_jawab"
                                         value={data.penanggung_jawab}
                                         onChange={(e) => setData('penanggung_jawab', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                     />
                                     {errors.penanggung_jawab && (
                                         <div className="mt-1 text-sm text-red-600">{errors.penanggung_jawab}</div>
@@ -160,7 +160,7 @@ export default function Edit({ transaksi, project }: Props) {
                                         id="bukti_file"
                                         onChange={(e) => setData('bukti_file', e.target.files ? e.target.files[0] : null)}
                                         accept=".jpg,.jpeg,.png,.pdf"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                     />
                                     <p className="mt-1 text-sm text-gray-500">Maksimal 2MB. Kosongkan jika tidak ingin mengubah bukti.</p>
                                     <div className="mt-2">

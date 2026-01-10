@@ -36,7 +36,7 @@ export default function Create() {
                                         id="nama_aset"
                                         value={data.nama_aset}
                                         onChange={(e) => setData('nama_aset', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                         placeholder="Contoh: Laptop Dell"
                                     />
                                     {errors.nama_aset && (
@@ -53,7 +53,7 @@ export default function Create() {
                                         id="jumlah"
                                         value={data.jumlah}
                                         onChange={(e) => setData('jumlah', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                         placeholder="0"
                                         min="1"
                                     />
@@ -70,7 +70,7 @@ export default function Create() {
                                         id="kondisi"
                                         value={data.kondisi}
                                         onChange={(e) => setData('kondisi', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                     >
                                         <option value="baik">Baik</option>
                                         <option value="rusak_ringan">Rusak Ringan</option>
@@ -90,7 +90,7 @@ export default function Create() {
                                         value={data.keterangan}
                                         onChange={(e) => setData('keterangan', e.target.value)}
                                         rows={4}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                         placeholder="Tambahkan keterangan jika diperlukan..."
                                     />
                                     {errors.keterangan && (

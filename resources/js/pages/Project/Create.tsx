@@ -35,7 +35,7 @@ export default function Create() {
                                         id="nama_project"
                                         value={data.nama_project}
                                         onChange={(e) => setData('nama_project', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                         placeholder="Contoh: Pembangunan Jalan Desa"
                                     />
                                     {errors.nama_project && (
@@ -52,7 +52,7 @@ export default function Create() {
                                         id="tanggal_mulai"
                                         value={data.tanggal_mulai}
                                         onChange={(e) => setData('tanggal_mulai', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                     />
                                     {errors.tanggal_mulai && (
                                         <div className="mt-1 text-sm text-red-600">{errors.tanggal_mulai}</div>
@@ -67,7 +67,7 @@ export default function Create() {
                                         id="status"
                                         value={data.status}
                                         onChange={(e) => setData('status', e.target.value as 'berlangsung' | 'selesai' | 'dibatalkan')}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                     >
                                         <option value="berlangsung">Berlangsung</option>
                                         <option value="selesai">Selesai</option>
