@@ -1,6 +1,6 @@
-import { login } from '@/routes';
+import { home, login } from '@/routes';
 import { store } from '@/routes/register';
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, Link } from '@inertiajs/react';
 
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
@@ -13,10 +13,22 @@ import AuthLayout from '@/layouts/auth-layout';
 export default function Register() {
     return (
         <AuthLayout
-            title="Create an account"
-            description="Enter your details below to create your account"
+            title="Buat Akun Baru"
+            description="Masukkan detail Anda untuk membuat akun"
         >
-            <Head title="Register" />
+            <Head title="Daftar" />
+
+            {/* Back Button */}
+            <Link 
+                href={home()} 
+                className="inline-flex items-center text-sm text-gray-600 hover:text-red-600 transition-colors mb-4"
+            >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Kembali ke Beranda
+            </Link>
+
             <Form
                 {...store.form()}
                 resetOnSuccess={['password', 'password_confirmation']}
@@ -27,7 +39,7 @@ export default function Register() {
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="name">Name</Label>
+                                <Label htmlFor="name" className="text-gray-900">Nama Lengkap</Label>
                                 <Input
                                     id="name"
                                     type="text"
@@ -36,7 +48,8 @@ export default function Register() {
                                     tabIndex={1}
                                     autoComplete="name"
                                     name="name"
-                                    placeholder="Full name"
+                                    placeholder="Nama lengkap Anda"
+                                    className="text-gray-900"
                                 />
                                 <InputError
                                     message={errors.name}
@@ -45,7 +58,7 @@ export default function Register() {
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
+                                <Label htmlFor="email" className="text-gray-900">Alamat Email</Label>
                                 <Input
                                     id="email"
                                     type="email"
@@ -54,12 +67,13 @@ export default function Register() {
                                     autoComplete="email"
                                     name="email"
                                     placeholder="email@example.com"
+                                    className="text-gray-900"
                                 />
                                 <InputError message={errors.email} />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="password">Password</Label>
+                                <Label htmlFor="password" className="text-gray-900">Password</Label>
                                 <Input
                                     id="password"
                                     type="password"
@@ -68,13 +82,14 @@ export default function Register() {
                                     autoComplete="new-password"
                                     name="password"
                                     placeholder="Password"
+                                    className="text-gray-900"
                                 />
                                 <InputError message={errors.password} />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="password_confirmation">
-                                    Confirm password
+                                <Label htmlFor="password_confirmation" className="text-gray-900">
+                                    Konfirmasi Password
                                 </Label>
                                 <Input
                                     id="password_confirmation"
@@ -83,7 +98,8 @@ export default function Register() {
                                     tabIndex={4}
                                     autoComplete="new-password"
                                     name="password_confirmation"
-                                    placeholder="Confirm password"
+                                    placeholder="Konfirmasi password"
+                                    className="text-gray-900"
                                 />
                                 <InputError
                                     message={errors.password_confirmation}
@@ -92,19 +108,19 @@ export default function Register() {
 
                             <Button
                                 type="submit"
-                                className="mt-2 w-full"
+                                className="mt-2 w-full bg-red-600 hover:bg-red-700 text-white font-medium"
                                 tabIndex={5}
                                 data-test="register-user-button"
                             >
                                 {processing && <Spinner />}
-                                Create account
+                                Buat Akun
                             </Button>
                         </div>
 
-                        <div className="text-center text-sm text-muted-foreground">
-                            Already have an account?{' '}
-                            <TextLink href={login()} tabIndex={6}>
-                                Log in
+                        <div className="text-center text-sm text-gray-600">
+                            Sudah punya akun?{' '}
+                            <TextLink href={login()} tabIndex={6} className="text-red-600 hover:text-red-700 font-medium">
+                                Masuk
                             </TextLink>
                         </div>
                     </>

@@ -11,7 +11,7 @@ use Laravel\Fortify\Features;
 
 Route::get('/', function () {
     return Inertia::render('welcome', [
-        'canRegister' => Features::enabled(Features::registration()),
+        'canRegister' => false, // Registration disabled - Only Super Admin can create users
     ]);
 })->name('home');
 

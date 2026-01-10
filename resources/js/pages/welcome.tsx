@@ -1,12 +1,8 @@
-import { dashboard, login, register } from '@/routes';
+import { dashboard, login } from '@/routes';
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 
-export default function Welcome({
-    canRegister = true,
-}: {
-    canRegister?: boolean;
-}) {
+export default function Welcome() {
     const { auth } = usePage<SharedData>().props;
 
     return (
@@ -38,22 +34,12 @@ export default function Welcome({
                                         Dashboard
                                     </Link>
                                 ) : (
-                                    <>
-                                        <Link
-                                            href={login()}
-                                            className="px-6 py-2.5 text-gray-700 hover:text-gray-900 font-medium transition-colors"
-                                        >
-                                            Masuk
-                                        </Link>
-                                        {canRegister && (
-                                            <Link
-                                                href={register()}
-                                                className="px-6 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all font-medium shadow-sm hover:shadow-md"
-                                            >
-                                                Daftar
-                                            </Link>
-                                        )}
-                                    </>
+                                    <Link
+                                        href={login()}
+                                        className="px-6 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all font-medium shadow-sm hover:shadow-md"
+                                    >
+                                        Masuk
+                                    </Link>
                                 )}
                             </div>
                         </div>
@@ -86,20 +72,12 @@ export default function Welcome({
                                         Buka Dashboard
                                     </Link>
                                 ) : (
-                                    <>
-                                        <Link
-                                            href={register()}
-                                            className="px-8 py-4 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                                        >
-                                            Mulai Sekarang
-                                        </Link>
-                                        <Link
-                                            href={login()}
-                                            className="px-8 py-4 bg-gray-100 text-gray-900 rounded-lg hover:bg-gray-200 transition-all font-semibold text-lg"
-                                        >
-                                            Masuk ke Akun
-                                        </Link>
-                                    </>
+                                    <Link
+                                        href={login()}
+                                        className="px-8 py-4 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                                    >
+                                        Masuk ke Sistem
+                                    </Link>
                                 )}
                             </div>
                         </div>
@@ -175,14 +153,14 @@ export default function Welcome({
                 <section className="py-20 px-4 sm:px-6 lg:px-8">
                     <div className="max-w-4xl mx-auto text-center">
                         <h2 className="text-4xl font-bold text-gray-900 mb-6">Siap Meningkatkan Transparansi Desa Anda?</h2>
-                        <p className="text-xl text-gray-600 mb-10">Bergabunglah dengan SIMANTESA untuk pengelolaan aset dan keuangan desa yang lebih baik.</p>
+                        <p className="text-xl text-gray-600 mb-10">Hubungi administrator untuk mendapatkan akses ke sistem SIMANTESA.</p>
                         
                         {!auth.user && (
                             <Link
-                                href={register()}
+                                href={login()}
                                 className="inline-block px-10 py-4 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                             >
-                                Daftar Gratis Sekarang
+                                Masuk ke Sistem
                             </Link>
                         )}
                     </div>
