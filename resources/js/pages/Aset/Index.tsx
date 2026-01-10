@@ -43,85 +43,133 @@ export default function Index({ aset }: Props) {
             <Head title="Inventaris Aset" />
 
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                        <div className="mb-6 flex justify-between items-center">
-                            <div>
-                                <h2 className="text-2xl font-bold text-gray-800">Inventaris Aset</h2>
-                                <p className="text-gray-600">Kelola inventaris aset desa</p>
-                            </div>
-                            <Link
-                                href="/aset/create"
-                                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                            >
-                                Tambah Aset
-                            </Link>
-                        </div>
+                <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h2 className="text-2xl font-bold text-gray-900">Inventaris Aset</h2>
+                        <p className="text-gray-600">Kelola inventaris aset desa</p>
+                    </div>
+                    <Link
+                        href="/aset/create"
+                        className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium shadow-sm hover:shadow-md"
+                    >
+                        Tambah Aset
+                    </Link>
+                </div>
 
-                        <div className="bg-white rounded-lg shadow overflow-hidden">
-                            <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50">
+                {/* Mobile Card View */}
+                <div className="lg:hidden space-y-4">
+                    {aset.length === 0 ? (
+                        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-center text-gray-500">
+                            Belum ada data aset
+                        </div>
+                    ) : (
+                        aset.map((item) => (
+                            <div key={item.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+                                <div className="flex items-start justify-between mb-3">
+                                    <div className="flex-1">
+                                        <h3 className="text-base font-semibold text-gray-900 mb-1">{item.nama_aset}</h3>
+                                        <p className="text-sm text-gray-600">Jumlah: <span className="font-semibold text-gray-900">{item.jumlah}</span></p>
+                                    </div>
+                                    <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getKondisiBadge(item.kondisi)}`}>
+                                        {getKondisiLabel(item.kondisi)}
+                                    </span>
+                                </div>
+                                
+                                {item.keterangan && (
+                                    <div className="mb-4 pb-3 border-b border-gray-100">
+                                        <p className="text-xs text-gray-500 mb-1">Keterangan</p>
+                                        <p className="text-sm text-gray-900">{item.keterangan}</p>
+                                    </div>
+                                )}
+
+                                <div className="flex gap-2 pt-3 border-t border-gray-100">
+                                    <Link
+                                        href={`/aset/${item.id}/edit`}
+                                        className="flex-1 px-3 py-2 text-center text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition"
+                                    >
+                                        Edit
+                                    </Link>
+                                    <button
+                                        onClick={() => handleDelete(item.id)}
+                                        className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition"
+                                    >
+                                        Hapus
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+
+                {/* Desktop Table View */}
+                <div className="hidden lg:block bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full divide-y divide-gray-200">
+                            <thead className="bg-gray-50">
+                                <tr>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Nama Aset
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Jumlah
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Kondisi
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Keterangan
+                                    </th>
+                                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Aksi
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-200">
+                                {aset.length === 0 ? (
                                     <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Nama Aset
-                                        </th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Jumlah
-                                        </th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Kondisi
-                                        </th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Keterangan
-                                        </th>
-                                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Aksi
-                                        </th>
+                                        <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
+                                            Belum ada data aset
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
-                                    {aset.length === 0 ? (
-                                        <tr>
-                                            <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
-                                                Belum ada data aset
+                                ) : (
+                                    aset.map((item) => (
+                                        <tr key={item.id} className="hover:bg-gray-50">
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <div className="text-sm font-medium text-gray-900">{item.nama_aset}</div>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <div className="text-sm text-gray-900 font-semibold">{item.jumlah}</div>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <span className={`px-2 py-1 text-xs font-semibold rounded ${getKondisiBadge(item.kondisi)}`}>
+                                                    {getKondisiLabel(item.kondisi)}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="text-sm text-gray-500">{item.keterangan || '-'}</div>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <Link
+                                                    href={`/aset/${item.id}/edit`}
+                                                    className="text-red-600 hover:text-red-900 mr-4"
+                                                >
+                                                    Edit
+                                                </Link>
+                                                <button
+                                                    onClick={() => handleDelete(item.id)}
+                                                    className="text-red-600 hover:text-red-900"
+                                                >
+                                                    Hapus
+                                                </button>
                                             </td>
                                         </tr>
-                                    ) : (
-                                        aset.map((item) => (
-                                            <tr key={item.id} className="hover:bg-gray-50">
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="text-sm font-medium text-gray-900">{item.nama_aset}</div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="text-sm text-gray-900">{item.jumlah}</div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <span className={`px-2 py-1 text-xs font-semibold rounded ${getKondisiBadge(item.kondisi)}`}>
-                                                        {getKondisiLabel(item.kondisi)}
-                                                    </span>
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    <div className="text-sm text-gray-500">{item.keterangan || '-'}</div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                    <Link
-                                                        href={`/aset/${item.id}/edit`}
-                                                        className="text-indigo-600 hover:text-indigo-900 mr-4"
-                                                    >
-                                                        Edit
-                                                    </Link>
-                                                    <button
-                                                        onClick={() => handleDelete(item.id)}
-                                                        className="text-red-600 hover:text-red-900"
-                                                    >
-                                                        Hapus
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
                     </div>
+                </div>
+            </div>
         </AuthenticatedLayout>
     );
 }
