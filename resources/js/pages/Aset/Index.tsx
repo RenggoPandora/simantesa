@@ -50,11 +50,15 @@ export default function Index({ aset }: Props) {
         return labels[kondisi] || kondisi;
     };
 
+    const breadcrumbs = [
+        { title: 'Inventaris Aset' }
+    ];
+
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumbs}>
             <Head title="Inventaris Aset" />
 
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div>
                 <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
                         <h2 className="text-2xl font-bold text-gray-900">Inventaris Aset</h2>
@@ -102,7 +106,7 @@ export default function Index({ aset }: Props) {
                                         Edit
                                     </Link>
                                     <button
-                                        onClick={() => handleDelete(item.id)}
+                                        onClick={() => handleDelete(item.id, item.nama_aset)}
                                         className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition"
                                     >
                                         Hapus

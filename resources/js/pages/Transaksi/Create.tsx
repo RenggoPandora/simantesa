@@ -51,21 +51,24 @@ export default function Create({ project }: Props) {
         }).format(amount);
     };
 
+    const breadcrumbs = [
+        { title: 'Project', href: '/projects' },
+        { title: project.nama_project, href: `/projects/${project.id}` },
+        { title: 'Tambah Transaksi' }
+    ];
+
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumbs}>
             <Head title="Tambah Transaksi" />
 
-            <div className="max-w-3xl mx-auto sm:px-6 lg:px-8">
-                        <div className="mb-6">
-                            <Link href={`/projects/${project.id}`} className="text-blue-600 hover:text-blue-800 mb-2 inline-block">
-                                ← Kembali ke Detail Project
-                            </Link>
-                            <h2 className="text-2xl font-bold text-gray-800">Tambah Transaksi</h2>
-                            <p className="text-gray-600">Project: {project.nama_project}</p>
-                            <p className="text-sm text-blue-600">Sisa Dana: {formatRupiah(project.sisa_dana)}</p>
-                        </div>
+            <div className="max-w-3xl">
+                <div className="mb-6">
+                    <h2 className="text-2xl font-bold text-gray-900">Tambah Transaksi</h2>
+                    <p className="text-gray-600">Project: <span className="font-semibold">{project.nama_project}</span></p>
+                    <p className="text-sm text-gray-900 mt-1">Sisa Dana: <span className="font-bold">{formatRupiah(project.sisa_dana)}</span></p>
+                </div>
 
-                        <div className="bg-white rounded-lg shadow p-6">
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div>
                                     <label htmlFor="tipe" className="block text-sm font-medium text-gray-700 mb-2">
@@ -75,7 +78,7 @@ export default function Create({ project }: Props) {
                                         id="tipe"
                                         value={data.tipe}
                                         onChange={(e) => setData('tipe', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900"
                                     >
                                         <option value="pemasukan">Pemasukan</option>
                                         <option value="pengeluaran">Pengeluaran</option>
@@ -95,7 +98,7 @@ export default function Create({ project }: Props) {
                                         value={data.tanggal}
                                         onChange={(e) => setData('tanggal', e.target.value)}
                                         style={{ colorScheme: 'light' }}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900"
                                     />
                                     {errors.tanggal && (
                                         <div className="mt-1 text-sm text-red-600">{errors.tanggal}</div>
@@ -111,7 +114,7 @@ export default function Create({ project }: Props) {
                                         value={data.keterangan}
                                         onChange={(e) => setData('keterangan', e.target.value)}
                                         rows={3}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900"
                                         placeholder="Jelaskan detail transaksi..."
                                     />
                                     {errors.keterangan && (
@@ -130,7 +133,7 @@ export default function Create({ project }: Props) {
                                             id="nominal"
                                             value={displayNominal}
                                             onChange={handleNominalChange}
-                                            className="w-full pl-12 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                                            className="w-full pl-12 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900"
                                             placeholder="0"
                                         />
                                     </div>
@@ -148,7 +151,7 @@ export default function Create({ project }: Props) {
                                         id="penanggung_jawab"
                                         value={data.penanggung_jawab}
                                         onChange={(e) => setData('penanggung_jawab', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900"
                                         placeholder="Nama penanggung jawab"
                                     />
                                     {errors.penanggung_jawab && (
@@ -165,25 +168,25 @@ export default function Create({ project }: Props) {
                                         id="bukti_file"
                                         onChange={(e) => setData('bukti_file', e.target.files ? e.target.files[0] : null)}
                                         accept=".jpg,.jpeg,.png,.pdf"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-red-50 file:text-red-700 hover:file:bg-red-100"
                                     />
-                                    <p className="mt-1 text-sm text-gray-500">Maksimal 2MB</p>
+                                    <p className="mt-1 text-sm text-gray-500">Upload bukti transaksi. Maksimal 2MB.</p>
                                     {errors.bukti_file && (
                                         <div className="mt-1 text-sm text-red-600">{errors.bukti_file}</div>
                                     )}
                                 </div>
 
-                                <div className="flex items-center justify-end space-x-4">
+                                <div className="flex items-center justify-end space-x-4 pt-4 border-t border-gray-100">
                                     <Link
                                         href={`/projects/${project.id}`}
-                                        className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"
+                                        className="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition font-medium"
                                     >
                                         Batal
                                     </Link>
                                     <button
                                         type="submit"
                                         disabled={processing}
-                                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+                                        className="px-6 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition disabled:opacity-50 font-medium shadow-sm hover:shadow-md"
                                     >
                                         {processing ? 'Menyimpan...' : 'Simpan'}
                                     </button>

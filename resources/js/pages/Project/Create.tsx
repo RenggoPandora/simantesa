@@ -14,21 +14,17 @@ export default function Create() {
         post('/projects');
     };
 
+    const breadcrumbs = [
+        { title: 'Project', href: '/projects' },
+        { title: 'Tambah Project' }
+    ];
+
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumbs}>
             <Head title="Tambah Project" />
 
-            <div className="max-w-3xl mx-auto sm:px-6 lg:px-8">
+            <div className="max-w-3xl">
                 <div className="mb-6">
-                    <Link
-                        href="/projects"
-                        className="inline-flex items-center text-sm text-gray-600 hover:text-red-600 mb-4 transition"
-                    >
-                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                        </svg>
-                        Kembali ke Daftar Project
-                    </Link>
                     <h2 className="text-2xl font-bold text-gray-900">Tambah Project</h2>
                     <p className="text-gray-600">Buat project baru untuk pelaporan keuangan</p>
                 </div>

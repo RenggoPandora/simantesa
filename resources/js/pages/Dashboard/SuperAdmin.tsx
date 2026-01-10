@@ -62,11 +62,15 @@ export default function SuperAdmin({ stats, aktivitasTerbaru, filters = {} }: Pr
         }).format(amount);
     };
 
+    const breadcrumbs = [
+        { title: 'Dashboard' }
+    ];
+
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard Super Admin" />
 
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div>
                 <div className="mb-8">
                     <h2 className="text-3xl font-bold text-gray-900">Dashboard Super Admin</h2>
                     <p className="text-gray-600 mt-1">Sistem Inventaris Aset dan Transparansi Keuangan Desa</p>

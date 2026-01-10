@@ -73,22 +73,18 @@ export default function Show({ project, transaksi }: Props) {
         }
     };
 
+    const breadcrumbs = [
+        { title: 'Project', href: '/projects' },
+        { title: project.nama_project }
+    ];
+
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumbs}>
             <Head title={`Detail Project - ${project.nama_project}`} />
 
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div>
                 {/* Project Info */}
                 <div className="mb-6">
-                    <Link
-                        href="/projects"
-                        className="inline-flex items-center text-sm text-gray-600 hover:text-red-600 mb-4 transition"
-                    >
-                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                        </svg>
-                        Kembali ke Daftar Project
-                    </Link>
                     <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-2">
                         <h2 className="text-2xl font-bold text-gray-900">{project.nama_project}</h2>
                         <span className={`px-3 py-1 text-sm font-semibold rounded-full ${getStatusBadge(project.status)} w-fit`}>

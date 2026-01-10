@@ -16,11 +16,16 @@ export default function Create() {
         post('/users');
     };
 
+    const breadcrumbs = [
+        { title: 'Manajemen User', href: '/users' },
+        { title: 'Tambah User' }
+    ];
+
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumbs}>
             <Head title="Tambah User" />
 
-            <div className="max-w-3xl mx-auto sm:px-6 lg:px-8">
+            <div className="max-w-3xl">
                         <div className="mb-6">
                             <h2 className="text-2xl font-bold text-gray-800">Tambah User</h2>
                             <p className="text-gray-600">Buat akun user baru</p>

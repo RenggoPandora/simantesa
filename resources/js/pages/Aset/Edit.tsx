@@ -27,21 +27,17 @@ export default function Edit({ aset }: Props) {
         put(`/aset/${aset.id}`);
     };
 
+    const breadcrumbs = [
+        { title: 'Inventaris Aset', href: '/aset' },
+        { title: 'Edit Aset' }
+    ];
+
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumbs}>
             <Head title="Edit Aset" />
 
-            <div className="max-w-3xl mx-auto sm:px-6 lg:px-8">
+            <div className="max-w-3xl">
                 <div className="mb-6">
-                    <Link
-                        href="/aset"
-                        className="inline-flex items-center text-sm text-gray-600 hover:text-red-600 mb-4 transition"
-                    >
-                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                        </svg>
-                        Kembali ke Daftar Aset
-                    </Link>
                     <h2 className="text-2xl font-bold text-gray-900">Edit Aset</h2>
                     <p className="text-gray-600">Update informasi aset</p>
                 </div>

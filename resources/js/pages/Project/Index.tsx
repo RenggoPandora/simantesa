@@ -68,11 +68,15 @@ export default function Index({ projects, users }: Props) {
         return labels[status] || status;
     };
 
+    const breadcrumbs = [
+        { title: 'Project' }
+    ];
+
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumbs}>
             <Head title="Project" />
 
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div>
                         <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                             <div>
                                 <h2 className="text-2xl font-bold text-gray-900">Daftar Project</h2>

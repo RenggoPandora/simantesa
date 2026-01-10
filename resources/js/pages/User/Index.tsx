@@ -43,11 +43,15 @@ export default function Index({ users }: Props) {
         return role === 'super_admin' ? 'Super Admin' : 'Perangkat Desa';
     };
 
+    const breadcrumbs = [
+        { title: 'Manajemen User' }
+    ];
+
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumbs}>
             <Head title="User Management" />
 
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div>
                         <div className="mb-6 flex justify-between items-center">
                             <div>
                                 <h2 className="text-2xl font-bold text-gray-800">User Management</h2>

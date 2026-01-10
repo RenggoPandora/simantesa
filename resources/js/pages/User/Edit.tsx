@@ -27,11 +27,16 @@ export default function Edit({ user }: Props) {
         put(`/users/${user.id}`);
     };
 
+    const breadcrumbs = [
+        { title: 'Manajemen User', href: '/users' },
+        { title: 'Edit User' }
+    ];
+
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumbs}>
             <Head title="Edit User" />
 
-            <div className="max-w-3xl mx-auto sm:px-6 lg:px-8">
+            <div className="max-w-3xl">
                         <div className="mb-6">
                             <h2 className="text-2xl font-bold text-gray-800">Edit User</h2>
                             <p className="text-gray-600">Update informasi user</p>

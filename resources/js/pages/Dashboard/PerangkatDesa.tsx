@@ -47,11 +47,15 @@ export default function PerangkatDesa({ stats, filters = {} }: Props) {
         }).format(amount);
     };
 
+    const breadcrumbs = [
+        { title: 'Dashboard' }
+    ];
+
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard Perangkat Desa" />
 
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div>
                 <div className="mb-8">
                     <h2 className="text-3xl font-bold text-gray-900">Dashboard Perangkat Desa</h2>
                     <p className="text-gray-600 mt-1">Kelola project dan pelaporan keuangan Anda</p>

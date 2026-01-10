@@ -134,6 +134,9 @@ class TransaksiKeuanganController extends Controller
             
             $buktiFile = $request->file('bukti_file')->store('bukti-transaksi', 'public');
             $validated['bukti_file'] = $buktiFile;
+        } else {
+            // Jika tidak ada file baru, jangan update field bukti_file
+            unset($validated['bukti_file']);
         }
 
         $transaksi->update($validated);
