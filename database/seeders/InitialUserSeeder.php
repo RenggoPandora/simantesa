@@ -24,15 +24,29 @@ class InitialUserSeeder extends Seeder
 
         // Create Perangkat Desa
         User::create([
-            'name' => 'Kepala Desa',
-            'email' => 'kepala@simantesa.com',
+            'name' => 'Budi Santoso',
+            'email' => 'budi@simantesa.com',
             'password' => Hash::make('password'),
             'role' => 'perangkat_desa',
         ]);
 
         User::create([
-            'name' => 'Sekretaris Desa',
-            'email' => 'sekretaris@simantesa.com',
+            'name' => 'Siti Aminah',
+            'email' => 'siti@simantesa.com',
+            'password' => Hash::make('password'),
+            'role' => 'perangkat_desa',
+        ]);
+
+        User::create([
+            'name' => 'Ahmad Fauzi',
+            'email' => 'ahmad@simantesa.com',
+            'password' => Hash::make('password'),
+            'role' => 'perangkat_desa',
+        ]);
+
+        User::create([
+            'name' => 'Rina Wijayanti',
+            'email' => 'rina@simantesa.com',
             'password' => Hash::make('password'),
             'role' => 'perangkat_desa',
         ]);
