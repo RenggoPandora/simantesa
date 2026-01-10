@@ -19,12 +19,21 @@ export default function Create() {
             <Head title="Tambah Project" />
 
             <div className="max-w-3xl mx-auto sm:px-6 lg:px-8">
-                        <div className="mb-6">
-                            <h2 className="text-2xl font-bold text-gray-800">Tambah Project</h2>
-                            <p className="text-gray-600">Buat project baru untuk pelaporan keuangan</p>
-                        </div>
+                <div className="mb-6">
+                    <Link
+                        href="/projects"
+                        className="inline-flex items-center text-sm text-gray-600 hover:text-red-600 mb-4 transition"
+                    >
+                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        </svg>
+                        Kembali ke Daftar Project
+                    </Link>
+                    <h2 className="text-2xl font-bold text-gray-900">Tambah Project</h2>
+                    <p className="text-gray-600">Buat project baru untuk pelaporan keuangan</p>
+                </div>
 
-                        <div className="bg-white rounded-lg shadow p-6">
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div>
                                     <label htmlFor="nama_project" className="block text-sm font-medium text-gray-700 mb-2">
@@ -35,7 +44,7 @@ export default function Create() {
                                         id="nama_project"
                                         value={data.nama_project}
                                         onChange={(e) => setData('nama_project', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900"
                                         placeholder="Contoh: Pembangunan Jalan Desa"
                                     />
                                     {errors.nama_project && (
@@ -53,7 +62,7 @@ export default function Create() {
                                         value={data.tanggal_mulai}
                                         onChange={(e) => setData('tanggal_mulai', e.target.value)}
                                         style={{ colorScheme: 'light' }}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900"
                                     />
                                     {errors.tanggal_mulai && (
                                         <div className="mt-1 text-sm text-red-600">{errors.tanggal_mulai}</div>
@@ -68,7 +77,7 @@ export default function Create() {
                                         id="status"
                                         value={data.status}
                                         onChange={(e) => setData('status', e.target.value as 'berlangsung' | 'selesai' | 'dibatalkan')}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900"
                                     >
                                         <option value="berlangsung">Berlangsung</option>
                                         <option value="selesai">Selesai</option>
@@ -79,17 +88,17 @@ export default function Create() {
                                     )}
                                 </div>
 
-                                <div className="flex items-center justify-end space-x-4">
+                                <div className="flex items-center justify-end space-x-4 pt-4 border-t border-gray-100">
                                     <Link
                                         href="/projects"
-                                        className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"
+                                        className="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition font-medium"
                                     >
                                         Batal
                                     </Link>
                                     <button
                                         type="submit"
                                         disabled={processing}
-                                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+                                        className="px-6 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition disabled:opacity-50 font-medium shadow-sm hover:shadow-md"
                                     >
                                         {processing ? 'Menyimpan...' : 'Simpan'}
                                     </button>

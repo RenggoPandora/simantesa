@@ -1,5 +1,7 @@
 import { Head, Link, router } from '@inertiajs/react';
+import { useState } from 'react';
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+import ConfirmDeleteModal from '@/components/ConfirmDeleteModal';
 
 interface Project {
     id: number;
@@ -24,9 +26,19 @@ interface Props {
 }
 
 export default function Index({ projects, users }: Props) {
-    const handleDelete = (id: number) => {
-        if (confirm('Apakah Anda yakin ingin menghapus project ini?')) {
-            router.delete(`/projects/${id}`);
+    const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; id: number | null; nama: string }>({
+        isOpen: false,
+        id: null,
+        nama: '',
+    });
+
+    const handleDelete = (id: number, nama: string) => {
+        setDeleteModal({ isOpen: true, id, nama });
+    };
+
+    const confirmDelete = () => {
+        if (deleteModal.id) {
+            router.delete(`/projects/${deleteModal.id}`);
         }
     };
 
@@ -129,7 +141,7 @@ export default function Index({ projects, users }: Props) {
                                                 Edit
                                             </Link>
                                             <button
-                                                onClick={() => handleDelete(project.id)}
+                                                onClick={() => handleDelete(project.id, project.nama_project)}
                                                 className="px-3 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition"
                                             >
                                                 Hapus
@@ -225,7 +237,7 @@ export default function Index({ projects, users }: Props) {
                                                             Edit
                                                         </Link>
                                                         <button
-                                                            onClick={() => handleDelete(project.id)}
+                                                            onClick={() => handleDelete(project.id, project.nama_project)}
                                                             className="text-red-600 hover:text-red-900"
                                                         >
                                                             Hapus
@@ -239,6 +251,15 @@ export default function Index({ projects, users }: Props) {
                             </div>
                         </div>
                     </div>
+
+            <ConfirmDeleteModal
+                isOpen={deleteModal.isOpen}
+                onClose={() => setDeleteModal({ isOpen: false, id: null, nama: '' })}
+                onConfirm={confirmDelete}
+                title="Hapus Project"
+                message="Apakah Anda yakin ingin menghapus project ini? Semua transaksi terkait juga akan dihapus."
+                itemName={deleteModal.nama}
+            />
         </AuthenticatedLayout>
     );
 }

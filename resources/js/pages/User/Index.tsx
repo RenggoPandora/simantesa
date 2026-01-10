@@ -1,5 +1,7 @@
 import { Head, Link, router } from '@inertiajs/react';
+import { useState } from 'react';
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+import ConfirmDeleteModal from '@/components/ConfirmDeleteModal';
 
 interface User {
     id: number;
@@ -14,9 +16,20 @@ interface Props {
 }
 
 export default function Index({ users }: Props) {
-    const handleDelete = (id: number) => {
-        if (confirm('Apakah Anda yakin ingin menghapus user ini?')) {
-            router.delete(`/users/${id}`);
+    const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; id: number | null; nama: string; email: string }>({
+        isOpen: false,
+        id: null,
+        nama: '',
+        email: '',
+    });
+
+    const handleDelete = (id: number, nama: string, email: string) => {
+        setDeleteModal({ isOpen: true, id, nama, email });
+    };
+
+    const confirmDelete = () => {
+        if (deleteModal.id) {
+            router.delete(`/users/${deleteModal.id}`);
         }
     };
 
@@ -103,7 +116,7 @@ export default function Index({ users }: Props) {
                                                         Edit
                                                     </Link>
                                                     <button
-                                                        onClick={() => handleDelete(user.id)}
+                                                        onClick={() => handleDelete(user.id, user.name, user.email)}
                                                         className="text-red-600 hover:text-red-900"
                                                     >
                                                         Hapus
@@ -116,6 +129,15 @@ export default function Index({ users }: Props) {
                             </table>
                         </div>
                     </div>
+
+            <ConfirmDeleteModal
+                isOpen={deleteModal.isOpen}
+                onClose={() => setDeleteModal({ isOpen: false, id: null, nama: '', email: '' })}
+                onConfirm={confirmDelete}
+                title="Hapus User"
+                message="Apakah Anda yakin ingin menghapus user ini?"
+                itemName={`${deleteModal.nama} (${deleteModal.email})`}
+            />
         </AuthenticatedLayout>
     );
 }

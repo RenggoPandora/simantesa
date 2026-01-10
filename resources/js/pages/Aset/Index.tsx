@@ -1,5 +1,7 @@
 import { Head, Link, router } from '@inertiajs/react';
+import { useState } from 'react';
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+import ConfirmDeleteModal from '@/components/ConfirmDeleteModal';
 
 interface Aset {
     id: number;
@@ -14,9 +16,19 @@ interface Props {
 }
 
 export default function Index({ aset }: Props) {
-    const handleDelete = (id: number) => {
-        if (confirm('Apakah Anda yakin ingin menghapus aset ini?')) {
-            router.delete(`/aset/${id}`);
+    const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; id: number | null; nama: string }>({
+        isOpen: false,
+        id: null,
+        nama: '',
+    });
+
+    const handleDelete = (id: number, nama: string) => {
+        setDeleteModal({ isOpen: true, id, nama });
+    };
+
+    const confirmDelete = () => {
+        if (deleteModal.id) {
+            router.delete(`/aset/${deleteModal.id}`);
         }
     };
 
@@ -156,7 +168,7 @@ export default function Index({ aset }: Props) {
                                                     Edit
                                                 </Link>
                                                 <button
-                                                    onClick={() => handleDelete(item.id)}
+                                                    onClick={() => handleDelete(item.id, item.nama_aset)}
                                                     className="text-red-600 hover:text-red-900"
                                                 >
                                                     Hapus
@@ -170,6 +182,15 @@ export default function Index({ aset }: Props) {
                     </div>
                 </div>
             </div>
+
+            <ConfirmDeleteModal
+                isOpen={deleteModal.isOpen}
+                onClose={() => setDeleteModal({ isOpen: false, id: null, nama: '' })}
+                onConfirm={confirmDelete}
+                title="Hapus Aset"
+                message="Apakah Anda yakin ingin menghapus aset ini?"
+                itemName={deleteModal.nama}
+            />
         </AuthenticatedLayout>
     );
 }

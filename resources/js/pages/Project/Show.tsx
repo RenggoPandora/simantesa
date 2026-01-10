@@ -1,5 +1,7 @@
 import { Head, Link, router } from '@inertiajs/react';
+import { useState } from 'react';
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+import ConfirmDeleteModal from '@/components/ConfirmDeleteModal';
 
 interface Project {
     id: number;
@@ -29,6 +31,12 @@ interface Props {
 }
 
 export default function Show({ project, transaksi }: Props) {
+    const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; id: number | null; keterangan: string }>({
+        isOpen: false,
+        id: null,
+        keterangan: '',
+    });
+
     const formatRupiah = (amount: number) => {
         return new Intl.NumberFormat('id-ID', {
             style: 'currency',
@@ -55,9 +63,13 @@ export default function Show({ project, transaksi }: Props) {
         return labels[status] || status;
     };
 
-    const handleDelete = (id: number) => {
-        if (confirm('Apakah Anda yakin ingin menghapus transaksi ini?')) {
-            router.delete(`/transaksi/${id}`);
+    const handleDelete = (id: number, keterangan: string) => {
+        setDeleteModal({ isOpen: true, id, keterangan });
+    };
+
+    const confirmDelete = () => {
+        if (deleteModal.id) {
+            router.delete(`/transaksi/${deleteModal.id}`);
         }
     };
 
@@ -66,48 +78,54 @@ export default function Show({ project, transaksi }: Props) {
             <Head title={`Detail Project - ${project.nama_project}`} />
 
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                        {/* Project Info */}
-                        <div className="mb-6">
-                            <Link href="/projects" className="text-blue-600 hover:text-blue-800 mb-2 inline-block">
-                                ← Kembali ke Daftar Project
-                            </Link>
-                            <div className="flex items-center gap-3 mb-2">
-                                <h2 className="text-2xl font-bold text-gray-800">{project.nama_project}</h2>
-                                <span className={`px-3 py-1 text-sm font-semibold rounded ${getStatusBadge(project.status)}`}>
-                                    {getStatusLabel(project.status)}
-                                </span>
-                            </div>
-                            <p className="text-gray-600">Owner: {project.owner} • Tanggal Mulai: {new Date(project.tanggal_mulai).toLocaleDateString('id-ID')}</p>
-                        </div>
+                {/* Project Info */}
+                <div className="mb-6">
+                    <Link
+                        href="/projects"
+                        className="inline-flex items-center text-sm text-gray-600 hover:text-red-600 mb-4 transition"
+                    >
+                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        </svg>
+                        Kembali ke Daftar Project
+                    </Link>
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-2">
+                        <h2 className="text-2xl font-bold text-gray-900">{project.nama_project}</h2>
+                        <span className={`px-3 py-1 text-sm font-semibold rounded-full ${getStatusBadge(project.status)} w-fit`}>
+                            {getStatusLabel(project.status)}
+                        </span>
+                    </div>
+                    <p className="text-gray-600">Owner: {project.owner} • Tanggal Mulai: {new Date(project.tanggal_mulai).toLocaleDateString('id-ID')}</p>
+                </div>
 
-                        {/* Summary Cards */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                            <div className="bg-white rounded-lg shadow p-6">
-                                <div className="text-sm font-medium text-gray-500">Total Pemasukan</div>
-                                <div className="mt-2 text-2xl font-semibold text-green-600">{formatRupiah(project.total_pemasukan)}</div>
-                            </div>
-                            <div className="bg-white rounded-lg shadow p-6">
-                                <div className="text-sm font-medium text-gray-500">Total Pengeluaran</div>
-                                <div className="mt-2 text-2xl font-semibold text-red-600">{formatRupiah(project.total_pengeluaran)}</div>
-                            </div>
-                            <div className="bg-white rounded-lg shadow p-6">
-                                <div className="text-sm font-medium text-gray-500">Sisa Dana</div>
-                                <div className="mt-2 text-2xl font-semibold text-blue-600">{formatRupiah(project.sisa_dana)}</div>
-                            </div>
-                        </div>
+                {/* Summary Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <div className="text-sm font-medium text-gray-500 mb-2">Total Pemasukan</div>
+                        <div className="text-2xl font-bold text-green-600">{formatRupiah(project.total_pemasukan)}</div>
+                    </div>
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <div className="text-sm font-medium text-gray-500 mb-2">Total Pengeluaran</div>
+                        <div className="text-2xl font-bold text-red-600">{formatRupiah(project.total_pengeluaran)}</div>
+                    </div>
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <div className="text-sm font-medium text-gray-500 mb-2">Sisa Dana</div>
+                        <div className="text-2xl font-bold text-gray-900">{formatRupiah(project.sisa_dana)}</div>
+                    </div>
+                </div>
 
-                        {/* Transaksi Table */}
-                        <div className="bg-white rounded-lg shadow">
-                            <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                                <h3 className="text-lg font-semibold text-gray-800">Transaksi Keuangan</h3>
-                                <Link
-                                    href={`/transaksi/create?project_id=${project.id}`}
-                                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm"
-                                >
-                                    Tambah Transaksi
-                                </Link>
-                            </div>
-                            <div className="overflow-x-auto">
+                {/* Transaksi Table */}
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100">
+                    <div className="px-6 py-4 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <h3 className="text-lg font-semibold text-gray-900">Transaksi Keuangan</h3>
+                        <Link
+                            href={`/transaksi/create?project_id=${project.id}`}
+                            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm font-medium shadow-sm hover:shadow-md w-full sm:w-auto text-center"
+                        >
+                            Tambah Transaksi
+                        </Link>
+                    </div>
+                    <div className="overflow-x-auto">
                                 <table className="min-w-full divide-y divide-gray-200">
                                     <thead className="bg-gray-50">
                                         <tr>
@@ -177,7 +195,7 @@ export default function Show({ project, transaksi }: Props) {
                                                             href={`/storage/${t.bukti_file}`}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            className="text-blue-600 hover:text-blue-800 text-sm"
+                                                            className="text-red-600 hover:text-red-900 text-sm font-medium"
                                                         >
                                                             Lihat Bukti
                                                         </a>
@@ -185,12 +203,12 @@ export default function Show({ project, transaksi }: Props) {
                                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                         <Link
                                                             href={`/transaksi/${t.id}/edit`}
-                                                            className="text-indigo-600 hover:text-indigo-900 mr-3"
+                                                            className="text-red-600 hover:text-red-900 mr-3"
                                                         >
                                                             Edit
                                                         </Link>
                                                         <button
-                                                            onClick={() => handleDelete(t.id)}
+                                                            onClick={() => handleDelete(t.id, t.keterangan)}
                                                             className="text-red-600 hover:text-red-900"
                                                         >
                                                             Hapus
@@ -204,6 +222,15 @@ export default function Show({ project, transaksi }: Props) {
                             </div>
                         </div>
                     </div>
+
+            <ConfirmDeleteModal
+                isOpen={deleteModal.isOpen}
+                onClose={() => setDeleteModal({ isOpen: false, id: null, keterangan: '' })}
+                onConfirm={confirmDelete}
+                title="Hapus Transaksi"
+                message="Apakah Anda yakin ingin menghapus transaksi ini?"
+                itemName={deleteModal.keterangan}
+            />
         </AuthenticatedLayout>
     );
 }
