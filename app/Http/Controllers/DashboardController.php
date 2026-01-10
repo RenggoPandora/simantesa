@@ -15,16 +15,36 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
+        // Get filter dates from request
+        $tanggalMulai = $request->input('tanggal_mulai');
+        $tanggalAkhir = $request->input('tanggal_akhir');
+
         if ($user->isSuperAdmin()) {
             // Dashboard Super Admin
             $totalAset = Aset::count();
             $totalProjectAktif = Project::count();
             
-            $totalPemasukan = TransaksiKeuangan::where('tipe', 'pemasukan')->sum('nominal');
-            $totalPengeluaran = TransaksiKeuangan::where('tipe', 'pengeluaran')->sum('nominal');
+            // Apply date filter if provided
+            $pemasukanQuery = TransaksiKeuangan::where('tipe', 'pemasukan');
+            $pengeluaranQuery = TransaksiKeuangan::where('tipe', 'pengeluaran');
+            $aktivitasQuery = TransaksiKeuangan::with(['project', 'creator']);
+
+            if ($tanggalMulai) {
+                $pemasukanQuery->where('tanggal', '>=', $tanggalMulai);
+                $pengeluaranQuery->where('tanggal', '>=', $tanggalMulai);
+                $aktivitasQuery->where('tanggal', '>=', $tanggalMulai);
+            }
+            if ($tanggalAkhir) {
+                $pemasukanQuery->where('tanggal', '<=', $tanggalAkhir);
+                $pengeluaranQuery->where('tanggal', '<=', $tanggalAkhir);
+                $aktivitasQuery->where('tanggal', '<=', $tanggalAkhir);
+            }
+
+            $totalPemasukan = $pemasukanQuery->sum('nominal');
+            $totalPengeluaran = $pengeluaranQuery->sum('nominal');
             
             // Aktivitas terbaru (10 transaksi terakhir)
-            $aktivitasTerbaru = TransaksiKeuangan::with(['project', 'creator'])
+            $aktivitasTerbaru = $aktivitasQuery
                 ->orderBy('created_at', 'desc')
                 ->limit(10)
                 ->get();
@@ -37,18 +57,32 @@ class DashboardController extends Controller
                     'totalPengeluaran' => $totalPengeluaran,
                 ],
                 'aktivitasTerbaru' => $aktivitasTerbaru,
+                'filters' => [
+                    'tanggal_mulai' => $tanggalMulai,
+                    'tanggal_akhir' => $tanggalAkhir,
+                ],
             ]);
         } else {
             // Dashboard Perangkat Desa
             $projects = Project::where('owner_id', $user->id)->get();
             
-            $totalPemasukan = TransaksiKeuangan::whereIn('project_id', $projects->pluck('id'))
-                ->where('tipe', 'pemasukan')
-                ->sum('nominal');
-                
-            $totalPengeluaran = TransaksiKeuangan::whereIn('project_id', $projects->pluck('id'))
-                ->where('tipe', 'pengeluaran')
-                ->sum('nominal');
+            // Apply date filter if provided
+            $pemasukanQuery = TransaksiKeuangan::whereIn('project_id', $projects->pluck('id'))
+                ->where('tipe', 'pemasukan');
+            $pengeluaranQuery = TransaksiKeuangan::whereIn('project_id', $projects->pluck('id'))
+                ->where('tipe', 'pengeluaran');
+
+            if ($tanggalMulai) {
+                $pemasukanQuery->where('tanggal', '>=', $tanggalMulai);
+                $pengeluaranQuery->where('tanggal', '>=', $tanggalMulai);
+            }
+            if ($tanggalAkhir) {
+                $pemasukanQuery->where('tanggal', '<=', $tanggalAkhir);
+                $pengeluaranQuery->where('tanggal', '<=', $tanggalAkhir);
+            }
+
+            $totalPemasukan = $pemasukanQuery->sum('nominal');
+            $totalPengeluaran = $pengeluaranQuery->sum('nominal');
             
             $sisaDana = $totalPemasukan - $totalPengeluaran;
 
@@ -58,6 +92,10 @@ class DashboardController extends Controller
                     'totalPemasukan' => $totalPemasukan,
                     'totalPengeluaran' => $totalPengeluaran,
                     'sisaDana' => $sisaDana,
+                ],
+                'filters' => [
+                    'tanggal_mulai' => $tanggalMulai,
+                    'tanggal_akhir' => $tanggalAkhir,
                 ],
             ]);
         }
