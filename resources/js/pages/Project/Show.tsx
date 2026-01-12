@@ -114,12 +114,25 @@ export default function Show({ project, transaksi }: Props) {
                 <div className="bg-white rounded-xl shadow-sm border border-gray-100">
                     <div className="px-6 py-4 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <h3 className="text-lg font-semibold text-gray-900">Transaksi Keuangan</h3>
-                        <Link
-                            href={`/transaksi/create?project_id=${project.id}`}
-                            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm font-medium shadow-sm hover:shadow-md w-full sm:w-auto text-center"
-                        >
-                            Tambah Transaksi
-                        </Link>
+                        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                            <a
+                                href={`/projects/${project.id}/export-pdf`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-4 py-2 bg-white border border-red-600 text-red-600 rounded-lg hover:bg-red-50 transition text-sm font-medium shadow-sm hover:shadow-md text-center inline-flex items-center justify-center gap-2"
+                            >
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Export PDF
+                            </a>
+                            <Link
+                                href={`/transaksi/create?project_id=${project.id}`}
+                                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm font-medium shadow-sm hover:shadow-md text-center"
+                            >
+                                Tambah Transaksi
+                            </Link>
+                        </div>
                     </div>
                     <div className="overflow-x-auto">
                                 <table className="min-w-full divide-y divide-gray-200">

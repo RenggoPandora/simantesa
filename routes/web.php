@@ -24,6 +24,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Projects (Accessible based on ownership and role)
     Route::resource('projects', ProjectController::class);
+    Route::get('projects/{project}/export-pdf', [ProjectController::class, 'exportPdf'])->name('projects.export-pdf');
 
     // Transaksi Keuangan (Accessible based on project ownership)
     Route::get('transaksi/create', [TransaksiKeuanganController::class, 'create'])->name('transaksi.create');
