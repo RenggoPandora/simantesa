@@ -101,6 +101,16 @@ class ProjectController extends Controller
         $project->load(['owner', 'transaksi.creator']);
 
         $transaksi = $project->transaksi->map(function ($t) {
+            // Get all files from bukti_files JSON column
+            $buktiFiles = [];
+            if ($t->bukti_files) {
+                $buktiFiles = is_array($t->bukti_files) ? $t->bukti_files : json_decode($t->bukti_files, true) ?? [];
+            }
+            // Fallback to single bukti_file if bukti_files is empty
+            if (empty($buktiFiles) && $t->bukti_file) {
+                $buktiFiles = [$t->bukti_file];
+            }
+            
             return [
                 'id' => $t->id,
                 'tanggal' => $t->tanggal,
@@ -109,6 +119,7 @@ class ProjectController extends Controller
                 'nominal' => $t->nominal,
                 'penanggung_jawab' => $t->penanggung_jawab,
                 'bukti_file' => $t->bukti_file,
+                'bukti_files' => $buktiFiles,
                 'created_by' => $t->creator->name,
             ];
         });

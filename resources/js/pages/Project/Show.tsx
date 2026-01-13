@@ -22,6 +22,7 @@ interface Transaksi {
     nominal: number;
     penanggung_jawab: string;
     bukti_file: string;
+    bukti_files?: string[];
     created_by: string;
 }
 
@@ -34,6 +35,11 @@ export default function Show({ project, transaksi }: Props) {
     const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; id: number | null; keterangan: string }>({
         isOpen: false,
         id: null,
+        keterangan: '',
+    });
+    const [buktiModal, setBuktiModal] = useState<{ isOpen: boolean; files: string[]; keterangan: string }>({
+        isOpen: false,
+        files: [],
         keterangan: '',
     });
 
@@ -71,6 +77,13 @@ export default function Show({ project, transaksi }: Props) {
         if (deleteModal.id) {
             router.delete(`/transaksi/${deleteModal.id}`);
         }
+    };
+
+    const handleViewBukti = (t: Transaksi) => {
+        const files = t.bukti_files && t.bukti_files.length > 0 ? t.bukti_files : [t.bukti_file];
+        console.log('Opening bukti modal with files:', files);
+        console.log('Keterangan:', t.keterangan);
+        setBuktiModal({ isOpen: true, files, keterangan: t.keterangan });
     };
 
     const breadcrumbs = [
@@ -200,14 +213,21 @@ export default function Show({ project, transaksi }: Props) {
                                                         <div className="text-sm text-gray-900">{t.penanggung_jawab}</div>
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap">
-                                                        <a 
-                                                            href={`/storage/${t.bukti_file}`}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="text-red-600 hover:text-red-900 text-sm font-medium"
+                                                        <button
+                                                            onClick={() => handleViewBukti(t)}
+                                                            className="text-red-600 hover:text-red-900 text-sm font-medium inline-flex items-center gap-1"
                                                         >
+                                                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                            </svg>
                                                             Lihat Bukti
-                                                        </a>
+                                                            {t.bukti_files && t.bukti_files.length > 1 && (
+                                                                <span className="ml-1 px-1.5 py-0.5 bg-red-100 text-red-700 text-xs rounded-full font-semibold">
+                                                                    {t.bukti_files.length}
+                                                                </span>
+                                                            )}
+                                                        </button>
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                         <Link
@@ -240,6 +260,106 @@ export default function Show({ project, transaksi }: Props) {
                 message="Apakah Anda yakin ingin menghapus transaksi ini?"
                 itemName={deleteModal.keterangan}
             />
+
+            {/* Modal Lihat Bukti */}
+            {buktiModal.isOpen && (
+                <div 
+                    className="fixed inset-0 z-[9999] overflow-y-auto bg-black bg-opacity-50" 
+                    aria-labelledby="modal-title" 
+                    role="dialog" 
+                    aria-modal="true"
+                    onClick={(e) => {
+                        if (e.target === e.currentTarget) {
+                            setBuktiModal({ isOpen: false, files: [], keterangan: '' });
+                        }
+                    }}
+                >
+                    <div className="flex items-center justify-center min-h-screen p-4">
+                        <div className="relative w-full max-w-4xl bg-white rounded-lg shadow-2xl" onClick={(e) => e.stopPropagation()}>
+                            {/* Header */}
+                            <div className="px-6 py-4 bg-red-600 flex items-center justify-between rounded-t-lg">
+                                <h3 className="text-lg font-semibold text-white">Bukti Transaksi</h3>
+                                <button
+                                    onClick={() => setBuktiModal({ isOpen: false, files: [], keterangan: '' })}
+                                    className="text-white hover:text-gray-200 transition"
+                                >
+                                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            {/* Content */}
+                            <div className="px-6 py-4 bg-white max-h-[80vh] overflow-y-auto">
+                                <p className="text-sm text-gray-600 mb-4 font-medium">{buktiModal.keterangan}</p>
+                                
+                                {buktiModal.files.length > 1 && (
+                                    <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                        <p className="text-sm text-blue-800 font-medium">
+                                            📄 Dokumen Multi-Halaman: {buktiModal.files.length} halaman
+                                        </p>
+                                    </div>
+                                )}
+                                
+                                <div className="space-y-6">
+                                    {buktiModal.files.map((file, index) => (
+                                        <div key={index} className="border-2 border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                                            {buktiModal.files.length > 1 && (
+                                                <div className="bg-gray-100 px-4 py-2 border-b border-gray-200">
+                                                    <p className="text-sm font-semibold text-gray-700">
+                                                        Halaman {index + 1} dari {buktiModal.files.length}
+                                                    </p>
+                                                </div>
+                                            )}
+                                            <div className="p-4 bg-white">
+                                                <img 
+                                                    src={`/storage/${file}`} 
+                                                    alt={`Bukti halaman ${index + 1}`}
+                                                    className="w-full h-auto rounded border border-gray-300"
+                                                    onError={(e) => {
+                                                        const target = e.target as HTMLImageElement;
+                                                        target.style.display = 'none';
+                                                        const parent = target.parentElement;
+                                                        if (parent) {
+                                                            parent.innerHTML = `<div class="p-8 text-center bg-red-50 border border-red-200 rounded">
+                                                                <p class="text-red-600 font-medium">Gagal memuat gambar</p>
+                                                                <p class="text-sm text-red-500 mt-1">${file}</p>
+                                                            </div>`;
+                                                        }
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="bg-gray-50 px-4 py-3 border-t border-gray-200">
+                                                <a
+                                                    href={`/storage/${file}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-sm text-red-600 hover:text-red-800 font-medium inline-flex items-center gap-1 hover:underline"
+                                                >
+                                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                    </svg>
+                                                    Buka di Tab Baru
+                                                </a>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            
+                            {/* Footer */}
+                            <div className="px-6 py-4 bg-gray-50 flex justify-end border-t border-gray-200 rounded-b-lg">
+                                <button
+                                    onClick={() => setBuktiModal({ isOpen: false, files: [], keterangan: '' })}
+                                    className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium"
+                                >
+                                    Tutup
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </AuthenticatedLayout>
     );
 }
