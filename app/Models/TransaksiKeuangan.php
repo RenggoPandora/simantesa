@@ -17,12 +17,14 @@ class TransaksiKeuangan extends Model
         'tanggal',
         'penanggung_jawab',
         'bukti_file',
+        'bukti_files',
         'created_by',
     ];
 
     protected $casts = [
         'nominal' => 'decimal:2',
         'tanggal' => 'date',
+        'bukti_files' => 'array',
     ];
 
     /**

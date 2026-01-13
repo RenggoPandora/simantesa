@@ -176,46 +176,14 @@ class ProjectController extends Controller
         $project->load(['owner', 'transaksi.creator']);
 
         $transaksi = $project->transaksi->map(function ($t) {
-            $buktiFile = $t->bukti_file;
-            $filePath = storage_path('app/public/' . $buktiFile);
-            $fileExtension = strtolower(pathinfo($buktiFile, PATHINFO_EXTENSION));
-            
-            // Convert PDF to images if file is PDF
-            $pdfImages = [];
-            if ($fileExtension === 'pdf' && file_exists($filePath)) {
-                try {
-                    // Check if Imagick is available
-                    if (extension_loaded('imagick')) {
-                        $imagick = new \Imagick();
-                        $imagick->setResolution(150, 150);
-                        $imagick->readImage($filePath);
-                        
-                        // Get number of pages
-                        $numPages = $imagick->getNumberImages();
-                        
-                        // Convert each page to JPG
-                        for ($i = 0; $i < $numPages; $i++) {
-                            $imagick->setIteratorIndex($i);
-                            $imagick->setImageFormat('jpeg');
-                            $imagick->setImageCompressionQuality(90);
-                            $imagick->setImageBackgroundColor('white');
-                            $imagick->setImageAlphaChannel(\Imagick::ALPHACHANNEL_REMOVE);
-                            $imagick->mergeImageLayers(\Imagick::LAYERMETHOD_FLATTEN);
-                            
-                            // Resize for reasonable file size
-                            $imagick->scaleImage(1000, 0);
-                            
-                            $imageBlob = $imagick->getImageBlob();
-                            $pdfImages[] = 'data:image/jpeg;base64,' . base64_encode($imageBlob);
-                        }
-                        
-                        $imagick->clear();
-                        $imagick->destroy();
-                    }
-                } catch (\Exception $e) {
-                    // If conversion fails, pdfImages will be empty
-                    \Log::warning('Failed to convert PDF to images: ' . $e->getMessage());
-                }
+            // Get all files from bukti_files JSON column
+            $buktiFiles = [];
+            if ($t->bukti_files) {
+                $buktiFiles = json_decode($t->bukti_files, true) ?? [];
+            }
+            // Fallback to single bukti_file if bukti_files is empty
+            if (empty($buktiFiles) && $t->bukti_file) {
+                $buktiFiles = [$t->bukti_file];
             }
             
             return [
@@ -225,9 +193,9 @@ class ProjectController extends Controller
                 'keterangan' => $t->keterangan,
                 'nominal' => $t->nominal,
                 'penanggung_jawab' => $t->penanggung_jawab,
-                'bukti_file' => $buktiFile,
+                'bukti_file' => $t->bukti_file, // Keep for backward compatibility
+                'bukti_files' => $buktiFiles, // Array of all files
                 'created_by' => $t->creator->name,
-                'pdf_images' => $pdfImages, // Array of base64 images if PDF
             ];
         });
 

@@ -42,7 +42,8 @@ class TransaksiKeuanganController extends Controller
             'nominal' => 'required|numeric|min:0.01',
             'tanggal' => 'required|date',
             'penanggung_jawab' => 'required|string|max:255',
-            'bukti_file' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'bukti_files' => 'required|array|min:1',
+            'bukti_files.*' => 'required|file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $project = Project::findOrFail($validated['project_id']);
@@ -58,12 +59,27 @@ class TransaksiKeuanganController extends Controller
             }
         }
 
-        // Upload bukti file
-        $buktiFile = $request->file('bukti_file')->store('bukti-transaksi', 'public');
+        // Handle multiple files (from PDF conversion)
+        $buktiFiles = [];
+        if ($request->hasFile('bukti_files')) {
+            foreach ($request->file('bukti_files') as $file) {
+                $buktiFiles[] = $file->store('bukti-transaksi', 'public');
+            }
+        }
+        
+        // Ensure we have at least one file
+        if (empty($buktiFiles)) {
+            return back()->withErrors([
+                'bukti_file' => 'File bukti harus diupload.'
+            ])->withInput();
+        }
 
-        $validated['bukti_file'] = $buktiFile;
+        // Use first file as primary bukti_file for backward compatibility
+        $validated['bukti_file'] = $buktiFiles[0];
+        // Store all files in JSON column for multi-page support
+        $validated['bukti_files'] = json_encode($buktiFiles);
         $validated['created_by'] = $request->user()->id;
-
+        
         TransaksiKeuangan::create($validated);
 
         return redirect()->route('projects.show', $project->id)

@@ -446,103 +446,91 @@
                     </div>
                     
                     @php
-                        $filePath = storage_path('app/public/' . $t['bukti_file']);
-                        $fileExtension = strtolower(pathinfo($t['bukti_file'], PATHINFO_EXTENSION));
-                        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-                        $fileExists = file_exists($filePath);
-                        $hasPdfImages = isset($t['pdf_images']) && !empty($t['pdf_images']);
+                        $buktiFiles = $t['bukti_files'] ?? [];
+                        $hasMultipleFiles = count($buktiFiles) > 1;
                     @endphp
                     
-                    @if($hasPdfImages)
-                        {{-- Display PDF converted to images (all pages) --}}
-                        <div style="margin-top: 15px; page-break-inside: avoid;">
-                            <div style="background: linear-gradient(135deg, #fee2e2, #fecaca); padding: 10px; border-radius: 6px; margin-bottom: 15px; text-align: center;">
-                                <p style="font-size: 11px; color: #dc2626; font-weight: 600; margin: 0;">
-                                    📄 FILE PDF - {{ count($t['pdf_images']) }} HALAMAN
+                    @if(!empty($buktiFiles))
+                        {{-- Display all image files (multi-page support) --}}
+                        @if($hasMultipleFiles)
+                            <div style="margin-top: 15px; margin-bottom: 15px; padding: 10px; background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-radius: 6px; text-align: center;">
+                                <p style="font-size: 11px; color: #1e40af; font-weight: 600; margin: 0;">
+                                    📄 DOKUMEN MULTI-HALAMAN - {{ count($buktiFiles) }} HALAMAN
                                 </p>
-                            </div>
-                            
-                            @foreach($t['pdf_images'] as $pageIndex => $imageData)
-                                <div style="margin-bottom: 20px; page-break-inside: avoid; @if($pageIndex > 0) page-break-before: always; @endif">
-                                    <div style="background: #f8f9fa; padding: 8px; border-radius: 4px; margin-bottom: 8px;">
-                                        <p style="font-size: 10px; color: #666; margin: 0; text-align: center;">
-                                            <strong>Halaman {{ $pageIndex + 1 }} dari {{ count($t['pdf_images']) }}</strong>
-                                        </p>
-                                    </div>
-                                    <div style="text-align: center; border: 2px solid #dc2626; border-radius: 8px; padding: 10px; background: #fff;">
-                                        <img src="{{ $imageData }}" alt="Halaman {{ $pageIndex + 1 }}" style="max-width: 100%; height: auto; border: 1px solid #dee2e6; border-radius: 4px;">
-                                    </div>
-                                </div>
-                            @endforeach
-                            
-                            <div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 6px; text-align: center;">
-                                <p style="font-size: 10px; color: #666; margin: 0;">
-                                    <strong>File:</strong> {{ basename($t['bukti_file']) }} 
-                                    <span style="margin: 0 8px;">•</span>
-                                    <strong>Total:</strong> {{ count($t['pdf_images']) }} halaman
-                                </p>
-                            </div>
-                        </div>
-                    @elseif(in_array($fileExtension, $imageExtensions) && $fileExists)
-                        {{-- Display actual image using base64 encoding for PDF compatibility --}}
-                        @php
-                            try {
-                                $imageData = base64_encode(file_get_contents($filePath));
-                                $mimeTypes = [
-                                    'jpg' => 'image/jpeg',
-                                    'jpeg' => 'image/jpeg',
-                                    'png' => 'image/png',
-                                    'gif' => 'image/gif',
-                                ];
-                                $mimeType = $mimeTypes[$fileExtension] ?? 'image/jpeg';
-                                $imageSrc = 'data:' . $mimeType . ';base64,' . $imageData;
-                            } catch (\Exception $e) {
-                                $imageSrc = null;
-                            }
-                        @endphp
-                        
-                        @if($imageSrc)
-                            <div style="margin-top: 15px; text-align: center; page-break-inside: avoid;">
-                                <img src="{{ $imageSrc }}" alt="Bukti Transaksi {{ $index + 1 }}" style="max-width: 100%; height: auto; max-height: 600px; border: 2px solid #dee2e6; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                                <p style="margin-top: 10px; font-size: 10px; color: #666; font-style: italic;">{{ basename($t['bukti_file']) }}</p>
-                            </div>
-                        @else
-                            <div style="padding: 30px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 5px; text-align: center; margin-top: 15px;">
-                                <p style="margin-bottom: 8px; color: #856404; font-weight: 600;">Gagal Memuat Gambar</p>
-                                <p style="font-size: 10px; color: #856404;">{{ basename($t['bukti_file']) }}</p>
                             </div>
                         @endif
-                    @elseif($fileExtension == 'pdf' && $fileExists)
-                        {{-- Fallback: PDF file exists but not converted (Imagick not available) --}}
-                        @php
-                            $fileSize = filesize($filePath);
-                            $fileSizeKB = round($fileSize / 1024, 2);
-                        @endphp
                         
-                        <div style="padding: 30px; background: #fff; border: 2px solid #dee2e6; border-radius: 8px; text-align: center; margin-top: 15px; page-break-inside: avoid;">
-                            <div style="width: 64px; height: 64px; margin: 0 auto 15px; background: linear-gradient(135deg, #fee2e2, #fecaca); border-radius: 12px; display: table; padding: 16px;">
-                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" style="display: table-cell; vertical-align: middle;">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    <polyline points="10 9 9 9 8 9"></polyline>
-                                </svg>
+                        @foreach($buktiFiles as $fileIndex => $filePath)
+                            @php
+                                $fullPath = storage_path('app/public/' . $filePath);
+                                $fileExtension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+                                $imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+                                $fileExists = file_exists($fullPath);
+                            @endphp
+                            
+                            <div style="margin-bottom: 30px; page-break-inside: avoid; @if($fileIndex > 0 && $fileIndex % 2 == 0) page-break-before: always; @endif">
+                                @if($hasMultipleFiles)
+                                    <div style="background: #f8f9fa; padding: 8px; border-radius: 4px; margin-bottom: 10px; text-align: center;">
+                                        <p style="font-size: 10px; color: #666; margin: 0;">
+                                            <strong>Halaman {{ $fileIndex + 1 }} dari {{ count($buktiFiles) }}</strong>
+                                        </p>
+                                    </div>
+                                @endif
+                                
+                                @if(in_array($fileExtension, $imageExtensions) && $fileExists)
+                                    @php
+                                        try {
+                                            $imageData = base64_encode(file_get_contents($fullPath));
+                                            $mimeTypes = [
+                                                'jpg' => 'image/jpeg',
+                                                'jpeg' => 'image/jpeg',
+                                                'png' => 'image/png',
+                                                'gif' => 'image/gif',
+                                            ];
+                                            $mimeType = $mimeTypes[$fileExtension] ?? 'image/jpeg';
+                                            $imageSrc = 'data:' . $mimeType . ';base64,' . $imageData;
+                                        } catch (\Exception $e) {
+                                            $imageSrc = null;
+                                        }
+                                    @endphp
+                                    
+                                    @if($imageSrc)
+                                        <div style="text-align: center;">
+                                            <div style="border: 2px solid #dc2626; border-radius: 8px; padding: 10px; background: #fff; display: inline-block;">
+                                                <img src="{{ $imageSrc }}" alt="Bukti {{ $fileIndex + 1 }}" style="max-width: 100%; height: auto; max-height: 700px; border-radius: 4px;">
+                                            </div>
+                                            @if(!$hasMultipleFiles)
+                                                <p style="margin-top: 10px; font-size: 10px; color: #666; font-style: italic;">{{ basename($filePath) }}</p>
+                                            @endif
+                                        </div>
+                                    @else
+                                        <div style="padding: 20px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 5px; text-align: center;">
+                                            <p style="color: #856404; font-weight: 600; font-size: 11px;">Gagal memuat gambar</p>
+                                            <p style="font-size: 9px; color: #856404;">{{ basename($filePath) }}</p>
+                                        </div>
+                                    @endif
+                                @else
+                                    <div style="padding: 20px; background: #fff3cd; border: 2px dashed #ffc107; border-radius: 8px; text-align: center;">
+                                        <p style="color: #856404; font-weight: 600; font-size: 11px;">
+                                            @if(!$fileExists)
+                                                File tidak ditemukan
+                                            @else
+                                                Format tidak didukung
+                                            @endif
+                                        </p>
+                                        <p style="font-size: 9px; color: #856404;">{{ basename($filePath) }}</p>
+                                    </div>
+                                @endif
                             </div>
-                            <p style="margin-bottom: 12px; color: #1a1a1a; font-weight: 700; font-size: 14px;">📄 Bukti File PDF Terlampir</p>
-                            <div style="padding: 12px 16px; background: #f8f9fa; border-radius: 6px; display: inline-block; margin-bottom: 12px;">
-                                <p style="font-size: 11px; color: #666; font-family: monospace; margin: 0;">{{ basename($t['bukti_file']) }}</p>
-                                <p style="font-size: 10px; color: #999; margin-top: 4px;">Ukuran: {{ $fileSizeKB }} KB</p>
-                            </div>
-                            <div style="background: #fff3cd; border: 1px solid #ffc107; border-radius: 6px; padding: 12px; margin-top: 12px;">
-                                <p style="font-size: 10px; color: #856404; margin: 0; line-height: 1.6;">
-                                    <strong>⚠️ Catatan:</strong><br>
-                                    PDF tidak dapat dikonversi menjadi gambar.<br>
-                                    Install Imagick extension untuk menampilkan isi PDF di laporan.<br>
-                                    Atau akses file asli melalui sistem SIMANTESA.
+                        @endforeach
+                        
+                        @if($hasMultipleFiles)
+                            <div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 6px; text-align: center;">
+                                <p style="font-size: 10px; color: #666; margin: 0;">
+                                    <strong>Total:</strong> {{ count($buktiFiles) }} halaman dari file asli
                                 </p>
                             </div>
-                        </div>
+                        @endif
                     @else
                         {{-- File not found or unsupported format --}}
                         <div style="padding: 30px; background: #fff3cd; border: 2px dashed #ffc107; border-radius: 8px; text-align: center; margin-top: 15px;">

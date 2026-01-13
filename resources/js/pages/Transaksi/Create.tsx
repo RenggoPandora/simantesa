@@ -1,6 +1,7 @@
 import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEvent, useState } from 'react';
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+import PdfToImageUpload from '@/components/PdfToImageUpload';
 
 interface Project {
     id: number;
@@ -20,7 +21,7 @@ export default function Create({ project }: Props) {
         nominal: '',
         tanggal: '',
         penanggung_jawab: '',
-        bukti_file: null as File | null,
+        bukti_files: [] as File[],
     });
 
     const [displayNominal, setDisplayNominal] = useState('');
@@ -40,6 +41,13 @@ export default function Create({ project }: Props) {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
+        
+        // Validate bukti_files
+        if (!data.bukti_files || data.bukti_files.length === 0) {
+            alert('Harap upload bukti file terlebih dahulu');
+            return;
+        }
+        
         post('/transaksi');
     };
 
@@ -159,22 +167,13 @@ export default function Create({ project }: Props) {
                                     )}
                                 </div>
 
-                                <div>
-                                    <label htmlFor="bukti_file" className="block text-sm font-medium text-gray-700 mb-2">
-                                        Bukti File (JPG, PNG, PDF) <span className="text-red-500">*</span>
-                                    </label>
-                                    <input
-                                        type="file"
-                                        id="bukti_file"
-                                        onChange={(e) => setData('bukti_file', e.target.files ? e.target.files[0] : null)}
-                                        accept=".jpg,.jpeg,.png,.pdf"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-red-50 file:text-red-700 hover:file:bg-red-100"
-                                    />
-                                    <p className="mt-1 text-sm text-gray-500">Upload bukti transaksi. Maksimal 2MB.</p>
-                                    {errors.bukti_file && (
-                                        <div className="mt-1 text-sm text-red-600">{errors.bukti_file}</div>
-                                    )}
-                                </div>
+                                <PdfToImageUpload
+                                    name="bukti_files"
+                                    label="Bukti File (JPG, PNG, PDF)"
+                                    required={true}
+                                    error={errors.bukti_file}
+                                    onFileChange={(files) => setData('bukti_files', files)}
+                                />
 
                                 <div className="flex items-center justify-end space-x-4 pt-4 border-t border-gray-100">
                                     <Link
